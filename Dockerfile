@@ -1,8 +1,8 @@
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /build
 
-COPY letterboxd-dev-test/pom.xml ./
-COPY letterboxd-dev-test/src ./src
+COPY ./letterboxd-dev-test-senior-main/pom.xml ./
+COPY ./letterboxd-dev-test-senior-main/src ./src
 RUN mvn clean test package
 
 FROM eclipse-temurin:21-jre-alpine
