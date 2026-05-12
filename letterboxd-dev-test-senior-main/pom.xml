@@ -49,6 +49,13 @@
             <version>${h2.version}</version>
         </dependency>
 
+        <!-- Crockford base32 encoding -->
+        <dependency>
+            <groupId>com.msiops.ground</groupId>
+            <artifactId>ground-crockford32</artifactId>
+            <version>0.1</version>
+        </dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
