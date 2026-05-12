@@ -59,6 +59,21 @@ You're welcome to add dependencies to `pom.xml` and introduce new classes, but p
 - http:// or https:// is required in the form
 - Stored URLS are trimmed and are case-sensitive, and must be unique to generate distinct codes
 
+## API
+
+Base URL: `http://localhost:8080`
+
+| Method | Path             | Description                          | Success         | Errors |
+|--------|------------------|--------------------------------------|-----------------|--------|
+| GET    | `/`              | Render the submission form           | `200 OK` (HTML) | —      |
+| POST   | `/`              | Create (or look up) a short code     | `200 OK` (HTML) | `400` if `url` is missing/invalid |
+| GET    | `/r/{shortcode}` | Redirect to the original URL         | `302 Found`     | `404` if the code is unknown, `400` if malformed |
+
+### POST `/`
+Form-encoded body with a single field:
+
+- `url` - the URL to shorten (must include `http://` or `https://`)
+
 **Implementation choices**
 - All URLs are stored in memory using a H2 database.
 - JPA is used to demonstrate an ORM approach, with a long primary key and a string index on a sha256 hash of the original URL
