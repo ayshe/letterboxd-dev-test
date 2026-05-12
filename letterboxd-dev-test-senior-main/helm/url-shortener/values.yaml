@@ -1,9 +1,9 @@
 replicaCount: 1
 image:
   pullPolicy: "Always"
-  repository: "git@github.com:ayshe/letterboxd-dev-test.git"
+  repository: "ghcr.io/ayshe/letterboxd-dev-test"
   tag: "latest"
   suffix: ""
 service:
   port: 8080
-  nodePort: 38080
+  nodePort: 32101

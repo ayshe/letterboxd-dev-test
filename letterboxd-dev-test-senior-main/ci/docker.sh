@@ -12,5 +12,3 @@ export TAG=$IMAGE:$CI_COMMIT_SHORT_SHA
 
 echo Building $TAG
 docker build -t $LATEST -t $TAG .
-docker push $LATEST
-docker push $TAG
