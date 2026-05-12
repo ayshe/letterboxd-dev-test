@@ -1,11 +1,9 @@
 package com.example.urlshortener.services.encoding.impl;
 
+import com.example.urlshortener.exception.FormatException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class Crockford32EncoderImplTest {
 
@@ -27,5 +25,19 @@ class Crockford32EncoderImplTest {
     void whenDecode_withKnownValues_returnsExpectedString(String input, Long expected) {
         var decoded = underTest.decode(input);
         Assertions.assertEquals(expected, decoded);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "''",
+            "'   '",
+            "null",
+            "!!!",
+            "abc$%",
+            "123 456"
+    },
+            nullValues = "null")
+    void whenDecode_withInvalidInput_throws(String input) {
+        Assertions.assertThrows(FormatException.class, () -> underTest.decode(input));
     }
 }

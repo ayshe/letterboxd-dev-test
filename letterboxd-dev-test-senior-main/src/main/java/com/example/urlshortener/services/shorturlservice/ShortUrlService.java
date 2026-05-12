@@ -5,7 +5,8 @@ import com.example.urlshortener.dto.ShortUrlDto;
 import java.util.List;
 
 public interface ShortUrlService {
-    ShortUrlDto getShortCode(String url);
+    ShortUrlDto getShortCode(String shortCode);
+    ShortUrlDto getOrCreateShortCode(String url);
 
     List<ShortUrlDto> getShortCodes();
 }

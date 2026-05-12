@@ -28,8 +28,10 @@ public class Main {
         final ShortUrlRepository shortUrlRepository = new ShortUrlRepository(emf);
         final ShortUrlService shortUrlService = new ShortUrlServiceImpl(shortUrlRepository, encoder);
 
+        Tomcat.addServlet(context, "redirect", new RedirectServlet(shortUrlService));
         Tomcat.addServlet(context, "urlShortener", new UrlShortenerServlet(shortUrlService));
-        context.addServletMappingDecoded("/*", "urlShortener");
+        context.addServletMappingDecoded("/r/*", "redirect");
+        context.addServletMappingDecoded("/", "urlShortener");
 
         tomcat.start();
         System.out.println("Server started on http://localhost:" + port);

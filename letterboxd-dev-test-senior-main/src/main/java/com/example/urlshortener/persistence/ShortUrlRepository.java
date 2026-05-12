@@ -5,12 +5,19 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ShortUrlRepository {
     private final EntityManagerFactory emf;
 
     public ShortUrlRepository(EntityManagerFactory emf) {
         this.emf = emf;
+    }
+
+    public Optional<ShortUrl> findById(Long id) {
+        try (EntityManager em = emf.createEntityManager()) {
+            return Optional.ofNullable(em.find(ShortUrl.class, id));
+        }
     }
 
     public List<ShortUrl> getShortCodes() {
