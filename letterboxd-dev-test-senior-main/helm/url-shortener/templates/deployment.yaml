@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ include "urlshortener.fullname" . }}
+  labels:
+    {{- include "urlshortener.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "urlshortener.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "urlshortener.selectorLabels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: gitea-registry-secret
+      containers:
+        - name: urlshortener
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ .Values.image.suffix }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}

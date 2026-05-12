@@ -1,0 +1,9 @@
+replicaCount: 1
+image:
+  pullPolicy: "Always"
+  repository: "git@github.com:ayshe/letterboxd-dev-test.git"
+  tag: "latest"
+  suffix: ""
+service:
+  port: 8080
+  nodePort: 38080
