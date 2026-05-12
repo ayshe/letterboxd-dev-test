@@ -1,0 +1,9 @@
+replicaCount: 1
+image:
+  pullPolicy: "Always"
+  repository: "ghcr.io/ayshe/letterboxd-dev-test"
+  tag: "latest"
+  suffix: ""
+service:
+  port: 8080
+  nodePort: 32101
