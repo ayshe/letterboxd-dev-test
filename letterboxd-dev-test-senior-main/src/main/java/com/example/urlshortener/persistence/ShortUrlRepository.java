@@ -31,27 +31,30 @@ public class ShortUrlRepository {
         EntityManager em = emf.createEntityManager();
 
         try {
+            em.getTransaction().begin();
+
             TypedQuery<ShortUrl> query = em.createQuery(
-                    "SELECT s FROM ShortUrl s WHERE s.originalUrl = :url",
+                    "SELECT s FROM ShortUrl s WHERE s.urlHash = :hash",
                     ShortUrl.class
             );
-            query.setParameter("url", url);
+            query.setMaxResults(1);
+            query.setParameter("hash", ShortUrl.getHash(url));
 
-            ShortUrl existing = query.getResultStream().findFirst().orElse(null);
-            if (existing != null) {
+            List<ShortUrl> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                em.getTransaction().commit();
+                var existing = results.getFirst();
                 System.out.println("Found existing short URL with ID:" + existing.getId() + " for URL: " + url);
                 return existing;
             }
 
-            em.getTransaction().begin();
-
-            ShortUrl shortUrl = new ShortUrl(url);
-            em.persist(shortUrl);
+            ShortUrl created = new ShortUrl(url);
+            em.persist(created);
 
             em.getTransaction().commit();
-            System.out.println("Created short URL with ID:" + shortUrl.getId() + " for URL: " + url);
-
-            return shortUrl;
+            System.out.println("Created short URL with ID:" + created.getId() + " for URL: " + url);
+            return created;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();

@@ -33,6 +33,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     @Override
     public ShortUrlDto getOrCreateShortCode(String url) {
+        url = url.trim();
         if (!UrlValidator.isValidUrl(url)) {
             throw new FormatException("Invalid URL: " + url);
         }
